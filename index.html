@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Table</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+
+  <style>
+    body{
+        background-color: black;
+    }
+  </style>
+</head>
+<body>
+<h1 class="text-center text-light" >Dynamic Table</h1>
+<div class="container">
+    <form action="#">
+        <table id="studentInfo" class="table table-dark  table-bordered">
+            <thead>
+                <tr class="table-success">
+                    <th>S.No.</th>
+                    <th>Player Name</th>
+                    <th>Jersey No.</th>
+                    <th>Runs</th>
+                    <th>Wickets</th>
+                    <th>Trophies</th>
+                    <th><button type="button" id="addButton" onclick="addRow()" disabled>+</button></th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <td>1</td>
+                    <td><input type="text" name="playerName"></td>
+                    <td><input type="text" name="jerseyNo"></td>
+                    <td><input type="text" name="runs"></td>
+                    <td><input type="text" name="wickets"></td>
+                    <td><input type="text" name="trophies"></td>
+                    <td><button type="button" onclick="removeRow(this)" disabled>-</button></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    <button type="button" class="btn btn-danger" onclick="toggleButtons()">Enable/Disable</button>
+    
+    </form>
+</div>
+
+<script>
+    var addButton = document.getElementById("addButton");
+
+    function addRow() {
+        var table = document.getElementById("studentInfo");
+        var tableBody = table.getElementsByTagName("tbody")[0];
+        var newRow = tableBody.insertRow(tableBody.rows.length);
+        // console.log(tableBody.rows.length)
+
+        var cell0 = newRow.insertCell(0);
+        cell0.innerHTML = tableBody.rows.length;
+
+        var cell1 = newRow.insertCell(1);
+        var studentNameInput = document.createElement("input");
+        studentNameInput.type = "text";
+        studentNameInput.name = "studentName";
+        cell1.appendChild(studentNameInput);
+
+        var cell2 = newRow.insertCell(2);
+        var rollNoInput = document.createElement("input");
+        rollNoInput.type = "text";
+        rollNoInput.name = "rollNo";
+        cell2.appendChild(rollNoInput);
+
+        var cell3 = newRow.insertCell(3);
+        var monthInput = document.createElement("input");
+        monthInput.type = "text";
+        monthInput.name = "month";
+        cell3.appendChild(monthInput);
+
+        var cell4 = newRow.insertCell(4);
+        var messChargesInput = document.createElement("input");
+        messChargesInput.type = "text";
+        messChargesInput.name = "messCharges";
+        cell4.appendChild(messChargesInput);
+
+        var cell5 = newRow.insertCell(5);
+        var roomChargesInput = document.createElement("input");
+        roomChargesInput.type = "text";
+        roomChargesInput.name = "roomCharges";
+        cell5.appendChild(roomChargesInput);
+
+        var cell6 = newRow.insertCell(6);
+        var removeButton = document.createElement("button");
+        removeButton.textContent = "-";
+        removeButton.type = "button";
+        removeButton.onclick = function () {
+            removeRow(this);
+        };
+        cell6.appendChild(removeButton);
+
+        updateSNo();
+        disableAddButton();
+    }
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        updateSNo();
+        disableAddButton();
+    }
+
+    function updateSNo() {
+        var table = document.getElementById("studentInfo");
+        var rows = table.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].getElementsByTagName("td")[0].innerHTML = i + 1;
+        }
+    }
+
+    function disableAddButton() {
+        var addButton = document.getElementById("addButton");
+        var rows = document.getElementById("tbody").getElementsByTagName("tr");
+
+        if (rows.length >= 10) {
+            addButton.disabled = true;
+        } else {
+            addButton.disabled = false;
+        }
+    }
+
+    var buttonsEnabled = true;
+
+    function toggleButtons() {
+        buttonsEnabled = !buttonsEnabled;
+        var addButton = document.getElementById("addButton");
+        var removeButtons = document.querySelectorAll("#tbody button");
+
+        addButton.disabled = !buttonsEnabled;
+        for (var i = 0; i < removeButtons.length; i++) {
+            removeButtons[i].disabled = !buttonsEnabled;
+        }
+    }
+
+</script>
+
+</body>
+</html>
